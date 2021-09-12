@@ -19,31 +19,29 @@ prime_ant(2)   # => 2
 prime_ant(11)  # => 5
 prime_ant(47)  # => 9
 """
+def smallestDivisor(n):
+    for num in range(2, n):
+        if n % num == 0:
+            return num
+    return "prime"
 
-import itertools
+def prime_ant(n):
+    A = list(range(2,n+2))
+    p = 0
+    for i in range(n):
+        if i == n:
+            break
+        q = smallestDivisor(A[p])
+        if q == "prime":
+            p += 1
+        else:
+            A[p] = A[p] // q
+            A[p-1] = A[p-1] + q
+            p -= 1
+    return p
 
-A = [i for i in itertools.count(start = 2)]
 
-# A = [2, 3, 4, 5, 6, 7]
-#
-p = 0
-n = 11
-turn = 0
-for a in A:
-    if a == 2 or a == 3:
-        p += 1
-        turn += 1
-    elif A[p] % 2 == 0:
-        A[p] = A[p] / 2
-        p -= 1
-        turn += 1
-    elif A[p] % 3 == 0:
-        A[p] = A[p] / 2
-        p -= 1
-        turn += 1
-    else:
-        p += 1
-        turn += 1
-
-    if n == turn:
-        print(p)
+tests = [28,11,19,2,12,29,46]
+for test in tests:
+    result = prime_ant(test)
+    print(test,result)
